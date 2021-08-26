@@ -1,0 +1,132 @@
+{% extends "../../base.html" %}
+{% load static %}
+
+        {% block title %} Batafsil | 45-maktab {% endblock %}
+
+        {% block content %}
+                <!--Breadcrumb Banner Area Start-->
+                <div class="breadcrumb-banner-area">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="breadcrumb-text">
+                                    <h1 class="text-center">Batafsil</h1>
+                                    <div class="breadcrumb-bar">
+                                        <ul class="breadcrumb text-center">
+                                            <li><a href="{% url 'index:index' %}">Bosh sahifa</a></li>
+                                            <li><a href="{% url 'blog:post_list' %}">Yangiliklar</a></li>
+                                            <li>Batafsil</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--End of Breadcrumb Banner Area-->
+                <!--News Details Area Start-->
+                <div class="news-details-area section-padding">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-9 col-md-12 col-12">
+                                <div class="news-details-content">
+                                   <div class="single-latest-item">
+                                        <img src="{{ post.image.url }}" alt="">  
+                                        <div class="single-latest-text">
+                                            <h3>{{ post.title }}</h3> 
+                                            <div class="single-item-comment-view">
+                                               <span><i class="zmdi zmdi-calendar-check"></i>{{post.publish|date:'d.m.y'}}</span>
+                                               <span><i class="zmdi zmdi-eye"></i>{{ post.views }}</span>
+                                               <span><i class="zmdi zmdi-comments"></i>19</span>
+                                            </div>
+                                            <p>{{ post.body }}</p>
+                                            <div class="tags-and-links">
+                                                <div class="related-tag">
+                                                    <span>Tag:</span>
+                                                    <ul class="tags">
+        {% for tag in post.tags.all %}
+            <li>
+                <a href="{% url 'blog:post_list_by_tag' tag.slug %}">
+                    {{ tag.name }}
+                </a>
+                {% if not forloop.last %}, {% endif %}
+            </li>                     
+        {% endfor %}            
+                                                    </ul>
+                                            </div>
+                                        <div class="social-links">
+                                            <span>Share:</span>
+                                            <a href="#"><i class="zmdi zmdi-facebook"></i></a>
+                                            <a href="#"><i class="zmdi zmdi-twitter"></i></a>
+                                            <a href="#"><i class="zmdi zmdi-google-old"></i></a>
+                                            <a href="#"><i class="zmdi zmdi-instagram"></i></a>
+                                        </div>
+                                    </div>
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
+                            <div class="col-lg-3 col-md-12 col-12">
+                                <div class="sidebar-widget">
+                                    {% if similar_posts %}
+                                    <div class="single-sidebar-widget">
+                                        <h4 class="title">Similar Posts</h4>
+                                        <div class="recent-content">
+                                            {% for tag in similar_posts %}
+                                                <div class="recent-content-item">
+                                                    <a href="{{tag.get_absolute_url}}">
+                                                        <img src="{{tag.image.url}}" alt="{{tag.title}}" width="70" height="67">
+                                                    </a>
+                                                    <div class="recent-text">
+                                                        <h4>
+                                                            <a href="{{ tag.get_absolute_url }}">
+                                                                {{ tag.title }}
+                                                            </a>
+                                                        </h4>
+                                                        <div class="single-item-comment-view">
+                                                            <span><i class="zmdi zmdi-eye"></i>{{ tag.views }}</span>
+                                                            <span><i class="zmdi zmdi-comments"></i>19</span>
+                                                        </div>
+                                                        <p>{{ tag.body|slice:'50' }}</p>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                    <div class="single-sidebar-widget">
+                                        <h4 class="title">Recent Posts</h4>
+                                        <div class="recent-content">
+                                            {% for last_post in last_posts  %}
+                                            
+                                            <div class="recent-content-item">
+                                                <a href="{{last_post.get_absolute_url}}"><img src="{{last_post.image.url}}" alt="{{last_post.title}}" width="70" height="67"></a>
+                                                <div class="recent-text">
+                                                    <h4><a href="{{last_post.get_absolute_url}}">{{last_post.title}}</a></h4>
+                                                    <div class="single-item-comment-view">
+                                                        <span><i class="zmdi zmdi-eye"></i>{{last_post.views}}</span>
+                                                        <span><i class="zmdi zmdi-comments"></i>19</span>
+                                                    </div>
+                                                    <p>{{last_post.body|slice:'50'}}</p>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="single-sidebar-widget">
+                                        <h4 class="title">Search by Tags</h4>
+                                        <ul class="tags">
+                                            {% for tags in all_tags  %}
+                                                <li>
+                                                    <a href="{% url 'blog:post_list_by_tag' tags.slug %}">{{tags.name}}</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+                <!--End of News Details Area-->
+        {% endblock %}
